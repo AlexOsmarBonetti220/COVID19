@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {Text, TextInput, StyleSheet, TouchableOpacity, View, ImageBackground, Modal, Alert} from 'react-native';
+import {Text, TextInput, StyleSheet, TouchableOpacity, View, ImageBackground, Image, Alert} from 'react-native';
 
 export default class DadosPaises extends Component {
     constructor(props){
@@ -11,19 +11,6 @@ export default class DadosPaises extends Component {
             infectados:0,
             mortos:0,
             curados:0,
-            paisExiste:false,
-            listaPaisesValidos:[
-                {id:0, nome:"Brazil"},
-                {id:1, nome:"Italy"},
-                {id:2, nome:"Spain"},
-                {id:3, nome:"China"},
-                {id:4, nome:"Iran"},
-                {id:5, nome:"France"},
-                {id:6, nome:"USA"},
-                {id:7, nome:"Netherlands"},
-                {id:8, nome:"Germany"},
-                {id:9, nome:"Belgium"},
-            ]
         }
 
         //Pegando os dados da api
@@ -33,34 +20,20 @@ export default class DadosPaises extends Component {
     requisicao(){
         //Verifico se o nome do pais que recebi está na lista dos paises monitorados pelo App
         let s = this.state;
-        let tam = s.listaPaisesValidos.length;
-        for(let i = 0; i < tam; i++){
-            if(s.listaPaisesValidos[i].nome == s.pais){
-                s.paisExiste = true;
-                this.setState(s);
-                break;
-            }
-        }
-        
-        //Fazendo a requisição
-        if(s.paisExiste){
-            fetch("https://covid19.mathdro.id/api/countries/"+this.state.pais)
-            .then((r)=>r.json())
-            .then((json)=>{
-                let s = this.state;
-                s.infectados = json.confirmed.value;
-                s.curados = json.recovered.value;
-                s.mortos = json.deaths.value;
-                s.load = true;
-                this.setState(s);
-            })
-            .catch((error)=>{
-                Alert.alert(error.code);
-            })
-        }else{
-            Alert.alert("Erro ao pegar os dados!");
+        fetch("https://covid19.mathdro.id/api/countries/"+this.state.pais)
+        .then((r)=>r.json())
+        .then((json)=>{
+            let s = this.state;
+            s.infectados = json.confirmed.value;
+            s.curados = json.recovered.value;
+            s.mortos = json.deaths.value;
+            s.load = true;
+            this.setState(s);
+        })
+        .catch((error)=>{
+            Alert.alert("País não encontrado ou o nome foi digitado incorretamente!");
             this.props.navigation.navigate("Home");
-        }
+        })
     }
 
 
@@ -91,7 +64,8 @@ export default class DadosPaises extends Component {
         }else{
             return(
                 <ImageBackground source={require("../img/covid.jpg")} style={e.body}>
-                    <Text>Loading...</Text>
+                    <Text style={e.loading}>Loading...</Text>
+                    <Image source={require("../img/giphy.gif")} />
                 </ImageBackground>
             )
         }
@@ -136,5 +110,12 @@ const e = StyleSheet.create({
         justifyContent:"center",
         marginTop:20,
         marginBottom:20
-    }
+    },
+    loading:{
+      fontSize:18,
+      fontWeight:"bold",
+      paddingBottom:20,
+      textAlign:"center",
+      color:"#FFFFFF"
+    },
 })

@@ -35,6 +35,15 @@ export default class Covid19 extends Component {
         {key:7, portugues:"Alemanha", ingles:"Germany"},
         {key:8, portugues:"Bélgica", ingles:"Belgium"},
         {key:9, portugues:"Brasil", ingles:"Brazil"},
+        {key:10, portugues:"Suíça", ingles:"Switzerland"},
+        {key:11, portugues:"Coreia do Sul", ingles:"South Korea"},
+        {key:12, portugues:"Áustria", ingles:"Austria"},
+        {key:13, portugues:"Noruega", ingles:"Norway"},
+        {key:14, portugues:"Portugal", ingles:"Portugal"},
+        {key:15, portugues:"Suécia", ingles:"Sweden"},
+        {key:16, portugues:"Austrália", ingles:"Australia"},
+        {key:17, portugues:"Canadá", ingles:"Canada"},
+        {key:18, portugues:"Turquia", ingles:"Turkey"},
       ]
     }
 
@@ -103,7 +112,7 @@ export default class Covid19 extends Component {
             </TouchableOpacity>
           </View>
           <View style={{alignItems:"center"}}> 
-            <Text style={e.demaisTextos}>Não sabe o nome dos países?</Text>
+            <Text style={e.demaisTextos}>Não sabe o nome dos países em inglês?</Text>
             <TouchableOpacity onPress={this.mostrarPaises}>
               <View style={e.button}>
                 <Text>Lista de países</Text>
@@ -115,7 +124,7 @@ export default class Covid19 extends Component {
               <ImageBackground source={require("../img/covid.jpg")} style={e.body}>
                 <View style={{alignItems:'center'}}>
                   <Button title="X" onPress={this.ocultarPaises} />
-                  <Text style={[e.demaisTextos,  {paddingTop:10}]}>Lista de países, afetados pelo COVID-19, cobridos por nós</Text>
+                  <Text style={[e.demaisTextos,  {paddingTop:10}]}>Lista de dos paises mais afetados pelo COVID-19, em inglês</Text>
                   <Text style={e.demaisTextos}>Português - Inglês</Text>
                   <FlatList 
                     data={this.state.listaPaises}
