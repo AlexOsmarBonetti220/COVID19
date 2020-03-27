@@ -1,6 +1,18 @@
 import React, {Component} from "react";
 
-import {Text, TextInput, StyleSheet, TouchableOpacity, View, ImageBackground, Modal, Alert} from 'react-native';
+import {
+  Text, 
+  TextInput, 
+  StyleSheet, 
+  TouchableOpacity,
+  View, 
+  ImageBackground, 
+  Modal, 
+  Alert, 
+  Image, 
+  FlatList,
+  Button
+} from 'react-native';
 
 export default class Covid19 extends Component {
   constructor(props){
@@ -13,7 +25,16 @@ export default class Covid19 extends Component {
       search:"",
       modalVisible:false,
       listaPaises:[
-        {key:0, nome:""},
+        {key:0, portugues:"Itália", ingles:"Italy"},
+        {key:1, portugues:"Espanha", ingles:"Spain"},
+        {key:2, portugues:"China", ingles:"China"},
+        {key:3, portugues:"Iran", ingles:"Iran"},
+        {key:4, portugues:"França", ingles:"France"},
+        {key:5, portugues:"Estados Unidos", ingles:"USA"},
+        {key:6, portugues:"Holanda", ingles:"Netherlands"},
+        {key:7, portugues:"Alemanha", ingles:"Germany"},
+        {key:8, portugues:"Bélgica", ingles:"Belgium"},
+        {key:9, portugues:"Brasil", ingles:"Brazil"},
       ]
     }
 
@@ -92,16 +113,14 @@ export default class Covid19 extends Component {
           <View>
             <Modal animationType="fade" visible={this.state.modalVisible}>
               <ImageBackground source={require("../img/covid.jpg")} style={e.body}>
-                <View>
-                  <Text style={e.demaisTextos}>Lista de países, afetados pelo COVID-19, cobridos por nós</Text>
-                  <Text style={e.demaisTextos}>Brasil</Text>
-                </View>
-                <View>
-                  <TouchableOpacity onPress={this.ocultarPaises}>
-                    <View style={e.button}>
-                      <Text>Sair</Text>
-                    </View>
-                  </TouchableOpacity>
+                <View style={{alignItems:'center'}}>
+                  <Button title="X" onPress={this.ocultarPaises} />
+                  <Text style={[e.demaisTextos,  {paddingTop:10}]}>Lista de países, afetados pelo COVID-19, cobridos por nós</Text>
+                  <Text style={e.demaisTextos}>Português - Inglês</Text>
+                  <FlatList 
+                    data={this.state.listaPaises}
+                    renderItem={({item})=><Lista data={item} />}
+                  />
                 </View>
               </ImageBackground>
             </Modal>
@@ -110,11 +129,31 @@ export default class Covid19 extends Component {
       )
     }else{
       return(
-        <ImageBackground source={require("../img/covid.jpg")} style={e.body}>
-          <Text style={{color:"white"}}>Loading...</Text>
+        <ImageBackground source={require("../img/covid.jpg")} style={[e.body, {justifyContent:"center"}]}>
+          <Text style={e.loading}>Loading...</Text>
+          <Image source={require("../img/giphy.gif")} />
         </ImageBackground>
       )
     }
+  }
+}
+
+class Lista extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      pt:this.props.data.portugues,
+      en:this.props.data.ingles
+    }
+  }
+  render(){
+    return(
+      <View style={e.lista}>
+        <View>
+          <Text style={e.demaisTextos}>{this.state.pt} - {this.state.en}</Text>
+        </View>
+      </View>
+    )
   }
 }
 
@@ -168,5 +207,16 @@ const e = StyleSheet.create({
     justifyContent:"center",
     marginTop:20,
     marginBottom:20
+  },
+  loading:{
+    fontSize:18,
+    fontWeight:"bold",
+    paddingBottom:20,
+    textAlign:"center",
+    color:"#FFFFFF"
+  },
+  lista:{
+    alignItems:"center",
+    padding:10
   }
 })

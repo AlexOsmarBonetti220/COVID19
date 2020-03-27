@@ -10,24 +10,60 @@ export default class DadosPaises extends Component {
             load:false,
             infectados:0,
             mortos:0,
-            curados:0
+            curados:0,
+            paisExiste:false,
+            listaPaisesValidos:[
+                {id:0, nome:"Brazil"},
+                {id:1, nome:"Italy"},
+                {id:2, nome:"Spain"},
+                {id:3, nome:"China"},
+                {id:4, nome:"Iran"},
+                {id:5, nome:"France"},
+                {id:6, nome:"USA"},
+                {id:7, nome:"Netherlands"},
+                {id:8, nome:"Germany"},
+                {id:9, nome:"Belgium"},
+            ]
         }
 
         //Pegando os dados da api
-        fetch("https://covid19.mathdro.id/api/countries/"+this.state.pais)
-        .then((r)=>r.json())
-        .then((json)=>{
-            let s = this.state;
-            s.infectados = json.confirmed.value;
-            s.curados = json.recovered.value;
-            s.mortos = json.deaths.value;
-            s.load = true;
-            this.setState(s);
-        })
-        .catch((error)=>{
-            Alert.alert(error.code);
-        })
+        this.requisicao();
     }
+
+    requisicao(){
+        //Verifico se o nome do pais que recebi está na lista dos paises monitorados pelo App
+        let s = this.state;
+        let tam = s.listaPaisesValidos.length;
+        for(let i = 0; i < tam; i++){
+            if(s.listaPaisesValidos[i].nome == s.pais){
+                s.paisExiste = true;
+                this.setState(s);
+                break;
+            }
+        }
+        
+        //Fazendo a requisição
+        if(s.paisExiste){
+            fetch("https://covid19.mathdro.id/api/countries/"+this.state.pais)
+            .then((r)=>r.json())
+            .then((json)=>{
+                let s = this.state;
+                s.infectados = json.confirmed.value;
+                s.curados = json.recovered.value;
+                s.mortos = json.deaths.value;
+                s.load = true;
+                this.setState(s);
+            })
+            .catch((error)=>{
+                Alert.alert(error.code);
+            })
+        }else{
+            Alert.alert("Erro ao pegar os dados!");
+            this.props.navigation.navigate("Home");
+        }
+    }
+
+
     render(){
         if(this.state.load){
             return(
