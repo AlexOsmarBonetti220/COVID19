@@ -7,13 +7,13 @@ const Stack = createStackNavigator();
 
 //Importando as rotas
 import Home from "../src/screens/home";
-import Brasil from "../src/screens/brasil";
+import DadosPaises from "../src/screens/dadosPaises";
 
 export default function myStack(){
     return(
         <Stack.Navigator>
             <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
-            <Stack.Screen name="Brasil" component={Brasil} options={{headerShown:false}} />
+            <Stack.Screen name="DadosPaises" component={DadosPaises} />
         </Stack.Navigator>
     )
 }

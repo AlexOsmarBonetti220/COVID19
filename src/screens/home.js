@@ -13,7 +13,7 @@ export default class Covid19 extends Component {
       search:"",
       modalVisible:false,
       listaPaises:[
-        {key:0, portugues:"", ingles:""},
+        {key:0, nome:""},
       ]
     }
 
@@ -47,13 +47,12 @@ export default class Covid19 extends Component {
   }
 
   buscarPais(){
-    let s = this.state.search.toLowerCase();
+    let s = this.state.search;
     if(s != ""){
-        switch(s){
-            case "brazil":this.props.navigation.navigate("Brasil");
-                          break;
-            default:Alert.alert("Esse país não se encontra nos nossos registros");
-        }
+      //Enviando para a tela que faz a requisição para os paises
+      this.props.navigation.navigate("DadosPaises", {pais:s});
+      s = "";
+      this.setState({search:s});
     }else
         Alert.alert("Erro ao buscar!");
   }
@@ -73,7 +72,7 @@ export default class Covid19 extends Component {
           </View>
           <View>
             <Text style={e.busca}>Digite o nome de um país para buscar suas informações</Text>
-            <TextInput value={this.state.search} style={e.input} placeholder="Digite o nome do pais em inglês" onChangeText={(t)=>this.setState({search:t})} />
+            <TextInput value={this.state.search} style={e.input} placeholder="Digite o nome do pais" onChangeText={(t)=>this.setState({search:t})} />
           </View>
           <View>
             <TouchableOpacity onPress={this.buscarPais}>
@@ -83,7 +82,7 @@ export default class Covid19 extends Component {
             </TouchableOpacity>
           </View>
           <View style={{alignItems:"center"}}> 
-            <Text style={e.demaisTextos}>Não sabe o nome dos países em inglês?</Text>
+            <Text style={e.demaisTextos}>Não sabe o nome dos países?</Text>
             <TouchableOpacity onPress={this.mostrarPaises}>
               <View style={e.button}>
                 <Text>Lista de países</Text>
@@ -95,8 +94,7 @@ export default class Covid19 extends Component {
               <ImageBackground source={require("../img/covid.jpg")} style={e.body}>
                 <View>
                   <Text style={e.demaisTextos}>Lista de países, afetados pelo COVID-19, cobridos por nós</Text>
-                  <Text style={e.demaisTextos}>Português - Inglês</Text>
-                  <Text style={e.demaisTextos}>Brasil - Brazil</Text>
+                  <Text style={e.demaisTextos}>Brasil</Text>
                 </View>
                 <View>
                   <TouchableOpacity onPress={this.ocultarPaises}>
@@ -126,7 +124,6 @@ const e = StyleSheet.create({
     padding:10,
     alignItems:"center",
     width:null,
-    zIndex:0
   },
   titulo:{
     fontSize:25,
